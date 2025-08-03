@@ -42,6 +42,8 @@
 -コメント機能
 -いいね機能
 -検索機能
+-カテゴリー機能
+-店舗情報
 
 ■ 機能の実装方針予定
 # 一般的なCRUD以外の実装予定の機能についてそれぞれどのようなイメージ(使用するAPIやgemなど)で実装する予定なのか現状考えているもので良いので教えて下さい。
@@ -51,3 +53,4 @@
 ページネーション　gem 'kaminari'、gem 'bootstrap5-kaminari-views'
 検索機能　gem 'ransack'
 パスワードリセット確認　gem 'letter_opener_web'
+店舗情報　Google Maps Place Details API
