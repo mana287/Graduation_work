@@ -78,7 +78,7 @@ rails: 7.1.4
 日本語化　gem 'rails-i18n'
 ファイルアップロード　gem 'carrierwave'
 ページネーション　gem 'kaminari'、gem 'bootstrap5-kaminari-views'
-検索機能　gem 'ransack'
+検索機能　gem 'ransack'、Stimulus Autocomplete controller
 パスワードリセット確認　gem 'letter_opener_web'
 店舗情報　Google Maps Place Details API
 
