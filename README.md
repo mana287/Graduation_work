@@ -1,1 +1,1 @@
-画面遷移URL https://www.figma.com/design/lgyLTvSbCZFIleh1DWaA1d/%E7%84%A1%E9%A1%8C?node-id=0-1&t=OqUYdhVEtxZcNk1U-1
+画面遷移URL https://www.figma.com/design/lgyLTvSbCZFIleh1DWaA1d/%E7%84%A1%E9%A1%8C?node-id=0-1&t=Zy7lmXMKJffwKDEO-1
