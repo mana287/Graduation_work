@@ -17,7 +17,9 @@ class ArticlesController < ApplicationController
     if @article.save
       redirect_to articles_path, notice: "記事を投稿しました"
     else
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = @article.errors.full_messages.to_sentence
+      Rails.logger.info("[ARTICLE_SAVE_ERRORS] #{@article.errors.full_messages.inspect}")
+      render :new, status: :unprocessable_content
     end
   end
 

@@ -10,18 +10,17 @@ class Article < ApplicationRecord
   validates :title, presence: true, length: { maximum: 120 }
   validates :body,  presence: true
 
-  validate :validate_image_type_and_size
+  validate :image_type_and_size
 
-  def validate_image_type_and_size
+  private
+  def image_type_and_size
     return unless image.attached?
 
-    acceptable_types = %w[image/png image/jpg image/jpeg image/webp]
-    unless acceptable_types.include?(image.blob.content_type)
-      errors.add(:image, "は JPG/PNG/WebP のみアップロードできます")
+    unless image.content_type.in?(%w[image/png image/jpeg image/jpg image/webp])
+      errors.add(:image, "はPNG/JPEG/WEBPのみアップロードできます")
     end
-
-    if image.blob.byte_size > 5.megabytes
-      errors.add(:image, "は 5MB 以下にしてください")
+    if image.byte_size > 5.megabytes
+      errors.add(:image, "は5MB以下にしてください")
     end
   end
 end
