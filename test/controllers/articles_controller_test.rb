@@ -18,7 +18,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
           title: "テスト投稿",
           body: "本文",
           kind: "shop",
-          extra_info: "自由欄",
+          extra_info: "自由欄"
         }
       }
     end
