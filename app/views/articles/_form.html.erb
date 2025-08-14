@@ -1,0 +1,67 @@
+<%= form_with model: @article, local: true do |f| %>
+    <% if @article.errors.any? %>
+      <div class="alert alert-danger rounded-3">
+        <ul class="mb-0">
+          <% @article.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= f.label :title, "タイトル", class: "form-label fw-bold" %>
+      <%= f.text_field :title, class: "form-control", required: true %>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :kind, "種別", class: "form-label" %>
+      <%= f.select :kind,
+            [["店舗情報", :shop], ["商品情報", :product]],
+            { include_blank: "選択してください" }, class: "form-select" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :body, "本文", class: "form-label" %>
+      <%= f.text_area :body, rows: 10, class: "form-control", required: true %>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :extra_info, "自由入力欄", class: "form-label" %>
+      <%= f.text_area :extra_info, rows: 4, class: "form-control",
+            placeholder: "営業時間、アクセス、価格、注意点など" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= f.label :tag_names, "タグ（カンマ区切り／後で保存対応）", class: "form-label" %>
+      <%= f.text_field :tag_names, class: "form-control",
+            placeholder: "例）卵アレルギー, 卵なし麺" %>
+    </div>
+  
+    <div class="mb-4">
+      <%= f.label :image, "画像", class: "form-label" %>
+      <%= f.file_field :image, class: "form-control", accept: "image/*", data: { preview_target: "input" } %>
+      <div class="form-text">JPG/PNG/WebP、5MBまで</div>
+      <% if @article.image.attached? %>
+        <div class="mt-2">
+          <%= image_tag @article.image, class: "img-thumbnail", style: "max-height: 180px; object-fit: cover;" %>
+        </div>
+      <% end %>
+      <img id="image-preview" class="mt-2 img-thumbnail d-none" style="max-height: 180px; object-fit: cover;">
+    </div>
+  
+    <%= f.submit "投稿", class: "btn btn-primary" %>
+    <%= link_to "一覧に戻る", articles_path, class: "btn btn-outline-secondary ms-2" %>
+  <% end %>
+  
+  <script>
+    // かんたんプレビュー
+    document.addEventListener("change", (e) => {
+      if (e.target.matches('input[type="file"][data-preview-target="input"]')) {
+        const file = e.target.files[0];
+        const img  = document.getElementById("image-preview");
+        if (!file) { img.classList.add("d-none"); return; }
+        const reader = new FileReader();
+        reader.onload = () => { img.src = reader.result; img.classList.remove("d-none"); };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
