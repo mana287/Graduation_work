@@ -1,9 +1,11 @@
 services:
   db:
-    image: postgres
+    platform: linux/arm64/v8
+    image: postgres:16
     restart: always
     environment:
       TZ: Asia/Tokyo
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
       - postgresql_data:/var/lib/postgresql/data
@@ -15,6 +17,7 @@ services:
       timeout: 5s
       retries: 5
   web:
+    platform: linux/arm64/v8
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -27,6 +30,11 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
+      RAILS_ENV: development
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGPORT: "5432"
     ports:
       - "3000:3000"
     depends_on:

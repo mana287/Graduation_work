@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get "articles/index"
+  get "sessions/new"
+  get "users/new"
+  get "users/create"
   root "home#index"
 
   # 後で使うルーティング（今は動かなくてもOK）
@@ -13,9 +15,11 @@ Rails.application.routes.draw do
   resources :tags, only: [ :index, :show ]
   resources :categories, only: [ :index, :show ]
 
-  # ログイン・新規登録（今は仮ページ）
-  get "/login",  to: "home#index"
-  get "/signup", to: "home#index"
+  resources :users, only: [ :new, :create ]
+  get    "/signup", to: "users#new"
+  get    "/login",  to: "sessions#new"
+  post   "/login",  to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
