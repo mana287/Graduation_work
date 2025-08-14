@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       redirect_to articles_path, notice: "登録しました。ようこそ！"
     else
       render :new, status: :unprocessable_entity
-    end    
+    end
   end
 
   private
