@@ -1,4 +1,41 @@
-<div class="container py-5">
-  <h1 class="h3 mb-4">記事一覧</h1>
-  <p class="text-muted">ここに記事一覧を表示していきます。</p>
+<div class="container-fluid">
+  <div class="row">
+    <%= render "shared/sidebar" %>
+
+    <main class="col py-4">
+      <h1 class="h4 mb-3">記事一覧</h1>
+
+      <% if @articles.any? %>
+        <div class="row g-4">
+          <% @articles.each do |article| %>
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm">
+                <% if article.image.attached? %>
+                  <%= image_tag article.image, class: "card-img-top",
+                        style: "height: 220px; object-fit: cover;" %>
+                <% else %>
+                  <div class="bg-light" style="height: 220px;"></div>
+                <% end %>
+
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="small text-muted">
+                      <i class="bi bi-person"></i>
+                      <%= article.user.name %>
+                    </div>
+                    <div class="small">
+                      <i class="bi bi-hand-thumbs-up"></i>
+                      <%= article.respond_to?(:likes_count) ? article.likes_count.to_i : 0 %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="alert alert-light border text-center">まだ記事がありません</div>
+      <% end %>
+    </main>
+  </div>
 </div>
