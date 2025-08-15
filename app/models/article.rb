@@ -7,6 +7,8 @@ class Article < ApplicationRecord
   # 後で acts-as-taggable-on 等を入れるまでの“受け口”
   attr_accessor :tag_names
 
+  before_validation :copy_tag_names_to_tags_text
+
   validates :title, presence: true, length: { maximum: 120 }
   validates :body,  presence: true
 
@@ -21,6 +23,10 @@ class Article < ApplicationRecord
   end
 
   private
+
+  def copy_tag_names_to_tags_text
+    self.tags_text = tag_names if tag_names.present?
+  end
 
   def author_presence
     if user.nil? && guest_name.blank?
