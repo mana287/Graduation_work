@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   # before_action :require_login, only: %i[new create]
-  before_action :set_article, only: [:show]
+  before_action :set_article, only: [ :show ]
 
   def index
     @articles = Article
