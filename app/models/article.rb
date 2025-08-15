@@ -27,7 +27,7 @@ class Article < ApplicationRecord
       errors.add(:guest_name, "を入力してください（未ログインで投稿する場合）")
     end
   end
-  
+
   def image_type_and_size
     return unless image.attached?
 
