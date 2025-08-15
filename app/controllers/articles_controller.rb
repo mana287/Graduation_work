@@ -1,11 +1,15 @@
 class ArticlesController < ApplicationController
   # before_action :require_login, only: %i[new create]
+  before_action :set_article, only: [ :show ]
 
   def index
     @articles = Article
       .includes(:user)
       .with_attached_image
       .order(created_at: :desc)
+  end
+
+  def show
   end
 
   def new
@@ -33,6 +37,10 @@ class ArticlesController < ApplicationController
   end
 
   private
+
+  def set_article
+    @article = Article.find(params[:id])
+  end
 
   def article_params
     # ★ guest_name を許可する（guest_email を使わないなら不要）

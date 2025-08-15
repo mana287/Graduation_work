@@ -10,18 +10,25 @@
           <% @articles.each do |article| %>
             <div class="col-12 col-md-6 col-lg-4">
               <div class="card h-100 shadow-sm">
-                <% if article.image.attached? %>
-                  <%= image_tag article.image, class: "card-img-top",
-                        style: "height: 220px; object-fit: cover;" %>
-                <% else %>
-                  <div class="bg-light" style="height: 220px;"></div>
+                <%= link_to article_path(article), class: "d-block text-decoration-none" do %>
+                  <% if article.image.attached? %>
+                    <%= image_tag article.image,
+                          class: "card-img-top",
+                          style: "height: 220px; object-fit: cover;",
+                          alt: article.title %>
+                  <% else %>
+                    <div class="bg-light d-flex align-items-center justify-content-center"
+                         style="height: 220px;">
+                      <span class="text-muted">画像なし</span>
+                    </div>
+                  <% end %>
                 <% end %>
 
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="small text-muted">
                       <i class="bi bi-person"></i>
-                      <%= article.user.name %>
+                      <%= article.user&.name || article.guest_name || "ゲスト" %>
                     </div>
                     <div class="small">
                       <i class="bi bi-hand-thumbs-up"></i>

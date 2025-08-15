@@ -12,6 +12,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create article" do
+    sign_in_as(@user)
     assert_difference("Article.count", 1) do
       post articles_url, params: {
         article: {
@@ -19,6 +20,8 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
           body: "本文",
           kind: "shop",
           extra_info: "自由欄"
+          # 画像は省略可。使うなら↓
+          # image: Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/sample.jpg"), "image/jpeg")
         }
       }
     end

@@ -1,2 +1,23 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+.prose {
+  line-height: 1.9;
+  font-size: 1.02rem;
+  word-break: break-word;
+}
+
+.tags { gap: .5rem; flex-wrap: wrap; }
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: .35rem .6rem;
+  font-size: .85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: rgb(134, 201, 238);         /* ←ご希望の薄いグレー */
+  color: #0a0d0c;
+  user-select: none;
+  letter-spacing: .02em;
+  box-shadow: 0 1px 1px rgba(0,0,0,.03);
+}

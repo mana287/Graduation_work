@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get "sessions/new"
-  get "users/new"
-  get "users/create"
   root "home#index"
 
   # 後で使うルーティング（今は動かなくてもOK）
