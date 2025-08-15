@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :require_login, only: %i[new create]
+  # before_action :require_login, only: %i[new create]
 
   def index
     @articles = Article
@@ -13,7 +13,16 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = current_user.articles.build(article_params)
+    attrs = article_params
+    if current_user
+      # ログイン中は guest_name を無視（なりすまし防止）
+      attrs = attrs.except(:guest_name)
+      @article = current_user.articles.build(attrs)
+    else
+      # ゲスト投稿（user_id は nil のまま、guest_name を使う）
+      @article = Article.new(attrs)
+    end
+
     if @article.save
       redirect_to articles_path, notice: "記事を投稿しました"
     else
@@ -24,7 +33,9 @@ class ArticlesController < ApplicationController
   end
 
   private
+
   def article_params
-    params.require(:article).permit(:title, :body, :kind, :extra_info, :image, :tag_names)
+    # ★ guest_name を許可する（guest_email を使わないなら不要）
+    params.require(:article).permit(:title, :body, :kind, :extra_info, :image, :tag_names, :guest_name)
   end
 end

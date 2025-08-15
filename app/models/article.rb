@@ -1,5 +1,5 @@
 class Article < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   has_one_attached :image
 
   enum :kind, { shop: 0, product: 1 } # 店舗/商品
@@ -10,9 +10,24 @@ class Article < ApplicationRecord
   validates :title, presence: true, length: { maximum: 120 }
   validates :body,  presence: true
 
+  # ゲスト投稿用チェック
+  validate :author_presence
+
   validate :image_type_and_size
 
+  # 表示用：投稿者名
+  def author_name
+    user&.name.presence || guest_name.presence || "ゲスト"
+  end
+
   private
+
+  def author_presence
+    if user.nil? && guest_name.blank?
+      errors.add(:guest_name, "を入力してください（未ログインで投稿する場合）")
+    end
+  end
+
   def image_type_and_size
     return unless image.attached?
 
