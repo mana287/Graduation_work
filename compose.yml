@@ -30,7 +30,8 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
-      RAILS_ENV: development
+      RAILS_ENV: production
+      DATABASE_URL: postgres://postgres:password@db:5432/myapp_production
       PGHOST: db
       PGUSER: postgres
       PGPASSWORD: password
