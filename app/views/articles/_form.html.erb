@@ -1,0 +1,118 @@
+<%# 使い方: render "form", article: @article %>
+<%= form_with model: article, local: true, html: { class: "needs-validation" } do |f| %>
+
+  <% if article.errors.any? %>
+    <div class="alert alert-danger rounded-3 py-2 px-3 mb-3">
+      <strong class="d-block mb-1">入力内容に誤りがあります。</strong>
+      <ul class="mb-0 ps-3">
+        <% article.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- タイトル -->
+  <div class="mb-3">
+    <%= f.label :title, "タイトル", class: "form-label" %> <span class="text-danger">*</span>
+    <%= f.text_field :title,
+          class: "form-control #{'is-invalid' if article.errors[:title].any?}",
+          required: true, maxlength: 120, placeholder: "120文字まで" %>
+    <% article.errors[:title].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+  </div>
+
+  <!-- 本文 -->
+  <div class="mb-3">
+    <%= f.label :body, "本文", class: "form-label" %> <span class="text-danger">*</span>
+    <%= f.text_area :body,
+          rows: 8,
+          class: "form-control #{'is-invalid' if article.errors[:body].any?}",
+          required: true,
+          placeholder: "本文を入力してください" %>
+    <% article.errors[:body].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+  </div>
+
+  <!-- 未ログイン時のみ：ゲスト名 -->
+  <% unless logged_in? %>
+    <div class="mb-3">
+      <%= f.label :guest_name, "投稿者名（未ログイン時）", class: "form-label" %> <span class="text-danger">*</span>
+      <%= f.text_field :guest_name,
+            class: "form-control #{'is-invalid' if article.errors[:guest_name].any?}",
+            required: true, placeholder: "ニックネーム可" %>
+      <% article.errors[:guest_name].each do |msg| %>
+        <div class="invalid-feedback"><%= msg %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- 種類（店舗 / 商品） -->
+  <div class="mb-3">
+    <%= f.label :kind, "カテゴリ", class: "form-label" %>
+    <%= f.select :kind,
+          options_for_select([["店舗情報", "shop"], ["商品情報", "product"]], article.kind || "shop"),
+          {},
+          class: "form-select #{'is-invalid' if article.errors[:kind].any?}",
+          id: "article_kind" %>
+    <% article.errors[:kind].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+  </div>
+
+  <!-- 追加情報（ラベル＆プレースホルダをカテゴリに応じて切替） -->
+  <div class="mb-3">
+    <% initial_is_shop = (article.kind || "shop") == "shop" %>
+    <%= f.label :extra_info,
+        (initial_is_shop ? "店舗情報（任意）" : "商品情報（任意）"),
+        class: "form-label",
+        id: "extra_info_label" %>
+
+    <%= f.text_area :extra_info,
+          rows: 4,
+          class: "form-control #{'is-invalid' if article.errors[:extra_info].any?}",
+          id: "article_extra_info",
+          placeholder: (initial_is_shop ? "営業時間、住所、最寄り駅、リンクなど" : "価格、購入場所、URL、型番など"),
+          data: {
+            shop_label: "店舗情報（任意）",
+            product_label: "商品情報（任意）",
+            shop_ph: "店舗名、営業時間、住所、リンクなど",
+            product_ph: "商品名、価格、購入場所、URL、など"
+          } %>
+    <% article.errors[:extra_info].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+  </div>
+
+  <!-- タグ（今は受け口だけ） -->
+  <div class="mb-3">
+    <%= f.label :tag_names, "タグ（任意）", class: "form-label" %>
+    <%= f.text_field :tag_names,
+          class: "form-control #{'is-invalid' if article.errors[:tag_names].any?}",
+          placeholder: "例）卵アレルギー、卵なし、卵なしお菓子" %>
+    <% article.errors[:tag_names].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+    <div class="form-text">カンマ区切りで入力（将来タグ機能に接続）</div>
+  </div>
+
+  <!-- 画像 -->
+  <div class="mb-3">
+    <%= f.label :image, "画像（任意）", class: "form-label" %>
+    <%= f.file_field :image,
+          accept: "image/png,image/jpeg,image/jpg,image/webp",
+          class: "form-control #{'is-invalid' if article.errors[:image].any?}" %>
+    <% article.errors[:image].each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
+    <div class="form-text">PNG/JPEG/WEBP、5MB以下</div>
+  </div>
+
+  <!-- ボタン -->
+  <div class="d-flex gap-2">
+    <%= f.submit "投稿", class: "btn btn-primary" %>
+    <%= link_to "キャンセル", articles_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

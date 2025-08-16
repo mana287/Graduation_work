@@ -1,0 +1,14 @@
+<!-- app/views/shared/_sidebar.html.erb -->
+<aside class="col-12 col-md-3 col-lg-2 border-end py-4">
+  <nav class="nav flex-column small">
+    <%= link_to "記事一覧", articles_path, class: "nav-link text-body" %>
+    <%= link_to "記事投稿", new_article_path, class: "nav-link text-body" %>
+
+    <% if logged_in? %>
+      <%= link_to "プロフィール", "#", class: "nav-link text-body disabled" %>
+    <% end %>
+
+    <%= link_to "カテゴリー別", "#", class: "nav-link text-body" %>
+    <%= link_to "検索", "#", class: "nav-link text-body disabled" %>
+  </nav>
+</aside>
