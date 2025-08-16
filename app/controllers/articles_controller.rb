@@ -17,8 +17,7 @@ class ArticlesController < ApplicationController
   end
 
   def create
-
-    Rails.logger.info "[ARTICLE_PARAMS] #{params.to_unsafe_h.except('authenticity_token','commit').tap{|h| h['article']&.delete('image') }.inspect}"
+    Rails.logger.info "[ARTICLE_PARAMS] #{params.to_unsafe_h.except('authenticity_token', 'commit').tap { |h| h['article']&.delete('image') }.inspect}"
 
     attrs = article_params.to_h
     if current_user
@@ -27,7 +26,7 @@ class ArticlesController < ApplicationController
     else
       @article = Article.new(attrs)
     end
-  
+
     if @article.save
       redirect_to articles_path, notice: "記事を投稿しました"
     else
