@@ -17,22 +17,23 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    attrs = article_params
+
+    Rails.logger.info "[ARTICLE_PARAMS] #{params.to_unsafe_h.except('authenticity_token','commit').tap{|h| h['article']&.delete('image') }.inspect}"
+
+    attrs = article_params.to_h
     if current_user
-      # ログイン中は guest_name を無視（なりすまし防止）
-      attrs = attrs.except(:guest_name)
+      attrs.delete("guest_name")
       @article = current_user.articles.build(attrs)
     else
-      # ゲスト投稿（user_id は nil のまま、guest_name を使う）
       @article = Article.new(attrs)
     end
-
+  
     if @article.save
       redirect_to articles_path, notice: "記事を投稿しました"
     else
-      flash.now[:alert] = @article.errors.full_messages.to_sentence
       Rails.logger.info("[ARTICLE_SAVE_ERRORS] #{@article.errors.full_messages.inspect}")
-      render :new, status: :unprocessable_content
+      flash.now[:alert] = @article.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_entity
     end
   end
 
