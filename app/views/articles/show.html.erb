@@ -93,22 +93,24 @@
             </div>
           <% end %>
 
-      <%# 下：編集／削除（本人のみ） %>
-      <% if current_user&.id == @article.user_id %>
-        <div class="d-flex justify-content-start gap-2 mt-4 border-top pt-3">
-          <%= link_to edit_article_path(@article), class: "btn btn-sm btn-outline-primary" do %>
-            <i class="bi bi-pencil"></i> 編集
-          <% end %>
+          <%# 下：編集／削除（本人のみ） %>
+          <% if current_user&.id == @article.user_id %>
+            <div class="d-flex justify-content-start gap-2 mt-4 border-top pt-3">
+              <%= link_to edit_article_path(@article), class: "btn btn-sm btn-outline-primary" do %>
+                <i class="bi bi-pencil"></i> 編集
+              <% end %>
 
-          <%= button_to article_path(@article),
-                method: :delete,
-                form: { class: "d-inline" },
-                data: { turbo_confirm: "本当に削除しますか？" },
-                class: "btn btn-sm btn-outline-danger" do %>
-            <i class="bi bi-trash"></i> 削除
+              <%= button_to article_path(@article),
+                    method: :delete,
+                    form: { class: "d-inline" },
+                    data: { turbo_confirm: "本当に削除しますか？" },
+                    class: "btn btn-sm btn-outline-danger" do %>
+                <i class="bi bi-trash"></i> 削除
+              <% end %>
+            </div>
           <% end %>
         </div>
-      <% end %>
+      </div>    
     </main>
   </div>
 </div>
