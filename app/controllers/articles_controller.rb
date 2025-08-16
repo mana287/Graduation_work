@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   # before_action :require_login, only: %i[new create]
-  before_action :set_article, only: [ :show ]
+  before_action :set_article, only: [ :show, :destroy ]
 
   def index
     @articles = Article
@@ -34,6 +34,17 @@ class ArticlesController < ApplicationController
       flash.now[:alert] = @article.errors.full_messages.to_sentence
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    # “自分の投稿のみ削除可”。ゲスト投稿（user_id が nil）は削除リンクを出さない想定
+    unless current_user && @article.user_id.present? && @article.user_id == current_user.id
+      redirect_to @article, alert: "この投稿は削除できません。"
+      return
+    end
+
+    @article.destroy!
+    redirect_to articles_path, notice: "記事を削除しました。"
   end
 
   private
